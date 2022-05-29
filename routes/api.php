@@ -30,6 +30,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('verify.api')->group(function () {
 
     });
+
+    // user
+    Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
+    Route::post('/user/add', [\App\Http\Controllers\UserController::class, 'store']);
+    Route::delete('/user/delete/{user}', [\App\Http\Controllers\UserController::class, 'destroy']);
+    Route::put('/user/edit/{user}', [\App\Http\Controllers\UserController::class, 'update']);
+    // profile
+    Route::put('/user/profile/edit/{user_id}', [\App\Http\Controllers\UserController::class, 'update']);
+    Route::get('/user/details/{user_id}', [\App\Http\Controllers\UserController::class, 'show']);
+
 });
 
 Route::post('/forgot-password', [\App\Http\Controllers\Auth\ForgotPasswordController::class, 'forgotPassword']);

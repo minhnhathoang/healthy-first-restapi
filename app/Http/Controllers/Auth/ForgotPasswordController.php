@@ -75,8 +75,8 @@ class ForgotPasswordController extends Controller
         }
 
         $check = DB::table('password_resets')->where([
-            ['email' => $request->email],
-            ['token' => $request->token],
+            'email' => $request->email,
+            'token' => $request->token,
         ]);
 
         if ($check->exists()) {
@@ -86,8 +86,8 @@ class ForgotPasswordController extends Controller
             }
 
             $delete = DB::table('password_resets')->where([
-                ['email' => $request->email],
-                ['token' => $request->token],
+                'email' => $request->email,
+                'token' => $request->token,
             ])->delete();
 
             return response(

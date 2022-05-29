@@ -19,6 +19,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
         $user = User::create([
+            'role_id' => $request->role_id,
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
@@ -37,13 +38,7 @@ class AuthController extends Controller
             ]);
         }
         Mail::to($request->email)->send(new VerifyEmail($request->name, $pin));
-
-        $token = $user->createToken('main')->plainTextToken;
-
-        return response([
-            'user' => $user,
-            'token' => $token
-        ]);
+        return response(['success' => true, 'message' => "Add new user"], 200);
     }
 
     public function verifyEmail(Request $request)
@@ -56,7 +51,7 @@ class AuthController extends Controller
         }
         $select = DB::table('password_resets')
             ->where(
-                ['email'=> Auth::user()->email],
+                ['email' => Auth::user()->email],
                 ['token' => $request->token]
             );
 
@@ -65,7 +60,7 @@ class AuthController extends Controller
         }
         $select = DB::table('password_resets')
             ->where(
-                ['email'=> Auth::user()->email],
+                ['email' => Auth::user()->email],
                 ['token' => $request->token]
             )->delete();
 
@@ -82,7 +77,8 @@ class AuthController extends Controller
         $remember = !empty($request->remember);
         if (!Auth::attempt($credentials, $remember)) {
             return response([
-                'errors' => 'Invalid login. Please check and try again.'
+                'success' => false,
+                'message' => "Invalid login. Please check and try again."
             ], 422);
         }
 
@@ -91,6 +87,8 @@ class AuthController extends Controller
         $token = $user->createToken('main')->plainTextToken;
 
         return response([
+            'success' => true,
+            'message' => "You are logged in",
             'user' => $user,
             'token' => $token
         ]);
@@ -98,10 +96,16 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::user()->currentAccessToken()->delete();
-
-        return response([
-            "message" => "Logged out"
-        ]);
+        if (Auth::check()) {
+            Auth::user()->currentAccessToken()->delete();
+            return response([
+                'success' => true,
+                'message' => "You are logged out",
+            ]);
+        }
+//        return response([
+//            'success' => false,
+//            'message' => "You aren't logged in"
+//        ], 400);
     }
 }
