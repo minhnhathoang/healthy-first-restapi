@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('provinces', function (Blueprint $table) {
             $table->id();
-            $table->string('geographic_code')->unique();
             $table->string('name');
+            $table->string('level');
         });
     }
 

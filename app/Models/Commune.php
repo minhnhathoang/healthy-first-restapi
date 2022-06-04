@@ -10,9 +10,8 @@ class Commune extends Model
     use HasFactory;
 
     protected $fillable = [
-        'province_id',
+        'id',
         'district_id',
-        'code',
         'name',
         'level'
     ];

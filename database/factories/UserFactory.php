@@ -17,12 +17,23 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $password = bcrypt('password');
         return [
-            'name' => $this->faker->name(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email_verified_at' => $this->faker->date(),
+            'password' => $password,
             'remember_token' => Str::random(10),
+
+            'avatar' => $this->faker->imageUrl(),
+
+            'role_id' => rand(1, 2),
+            'last_name' => $this->faker->lastName(),
+            'address' => $this->faker->address(),
+            'gender' => rand(0, 1),
+            'birthday' => $this->faker->date(),
+            'mobile' => $this->faker->phoneNumber()
         ];
     }
 

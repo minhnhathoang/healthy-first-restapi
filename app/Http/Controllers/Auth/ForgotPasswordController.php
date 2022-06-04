@@ -85,10 +85,10 @@ class ForgotPasswordController extends Controller
                 return response(['success' => false, 'message' => "Token Expired"], 400);
             }
 
-            $delete = DB::table('password_resets')->where([
-                'email' => $request->email,
-                'token' => $request->token,
-            ])->delete();
+//            $delete = DB::table('password_resets')->where([
+//                'email' => $request->email,
+//                'token' => $request->token,
+//            ])->delete();
 
             return response(
                 [

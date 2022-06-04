@@ -15,7 +15,7 @@ class EstablishmentController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

@@ -15,7 +15,7 @@ class SampleController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

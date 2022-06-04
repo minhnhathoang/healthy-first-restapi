@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Mail\Login;
 use App\Mail\VerifyEmail;
 use App\Models\User;
 use Illuminate\Http\Client\Request;
@@ -82,15 +84,15 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = Auth::user();
+        $user = User::where('id', Auth::user()->id)->first();
 
-        $token = $user->createToken('main')->plainTextToken;
+        Mail::to($user->email)->send(new Login($user->full_name, now()));
 
         return response([
             'success' => true,
             'message' => "You are logged in",
-            'user' => $user,
-            'token' => $token
+            'user' => new UserResource($user),
+            'token' => Auth::user()->createToken('main')->plainTextToken
         ]);
     }
 
@@ -103,9 +105,5 @@ class AuthController extends Controller
                 'message' => "You are logged out",
             ]);
         }
-//        return response([
-//            'success' => false,
-//            'message' => "You aren't logged in"
-//        ], 400);
     }
 }

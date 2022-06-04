@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Province extends Model
+class District extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'geographic_code',
+        'id',
+        'province_id',
         'name',
+        'level'
     ];
 
     public $timestamps = false;

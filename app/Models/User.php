@@ -24,13 +24,13 @@ class User extends Authenticatable
         'password',
         'first_name',
         'surname',
-        'username',
         'last_name',
         'address',
         'gender',
         'job',
         'birthday',
-        'mobile'
+        'mobile',
+        'full_name'
     ];
 
     /**
@@ -67,6 +67,13 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: fn ($value, $attribute) => $attribute['gender'] === 1 ? 'Female' : 'Male'
+        );
+    }
+
+    protected function avatarLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value, $attribute) => $attribute['avatar'] ? env('app_url'). ":8000/storage/".$attribute['avatar'] : null
         );
     }
 }

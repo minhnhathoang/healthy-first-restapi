@@ -24,13 +24,14 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|string',
+            'first_name' => 'string',
             'surname' => 'string',
-            'last_name' => 'required|string',
+            'last_name' => 'string',
             'address' => 'string',
-            'gender' => 'boolean',
-            'mobile' => 'digits_between:10,12',
-            'birthday' => 'date'
+//            'gender' => 'boolean',
+//            'mobile' => 'digits_between:10,12',
+//            'birthday' => 'date',
+//            'avatar' => 'mimes:jpg,jpeg,png'
         ];
     }
 }
