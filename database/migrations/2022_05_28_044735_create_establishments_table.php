@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('owner');
             $table->string('address');
             $table->string('telephone');
+            $table->string('fax')->nullable();
+            $table->string('kind_of_business');
+            $table->string('description');
             $table->timestamps();
         });
     }

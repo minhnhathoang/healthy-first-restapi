@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return \App\Http\Resources\UserResource::collection($user);
     });
 
+
     Route::post('/email/verify', [\App\Http\Controllers\Auth\AuthController::class, 'verifyEmail']);
 
     Route::post('/password/change', [\App\Http\Controllers\Auth\ResetPasswordController::class, 'changePassword']);
@@ -35,6 +36,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('verify.api')->group(function () {
 
     });
+
+    // gso
+
+    Route::get('/provinces', [\App\Http\Controllers\GSO\ProvinceController::class, 'index']);
+    Route::post('/province/districts', [\App\Http\Controllers\GSO\DistrictController::class, 'getDistrictsOfProvince']);
+    Route::post('/district/communes', [\App\Http\Controllers\GSO\CommuneController::class, 'getCommunesOfDistrict']);
 
     // user
     Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
@@ -47,6 +54,20 @@ Route::middleware('auth:sanctum')->group(function () {
     // profile
     Route::post('/user/profile/edit/{user_id}', [\App\Http\Controllers\UserController::class, 'update']);
     Route::get('/user/details/{user_id}', [\App\Http\Controllers\UserController::class, 'show']);
+
+    // establishment
+    Route::get('/establishments', [\App\Http\Controllers\EstablishmentController::class, 'index']);
+    Route::post('/establishment/add', [\App\Http\Controllers\EstablishmentController::class, 'store']);
+    Route::get('/establishment/details/{id}', [\App\Http\Controllers\EstablishmentController::class, 'show']);
+    Route::post('/establishment/edit/{id}', [\App\Http\Controllers\EstablishmentController::class, 'update']);
+
+    Route::post('/establishments/{id}', [\App\Http\Controllers\EstablishmentController::class, 'index']);
+    Route::delete('/establishments/{id}', [\App\Http\Controllers\EstablishmentController::class, 'index']);
+
+    // certificate
+
+    // plan
+
 
 });
 

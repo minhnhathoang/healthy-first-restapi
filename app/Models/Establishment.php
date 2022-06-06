@@ -14,9 +14,15 @@ class Establishment extends Model
         'owner',
         'address',
         'telephone',
+        'description',
+        'kind_of_business'
     ];
 
-    public function certifications() {
-        return $this->hasMany(Certification::class);
+    public function certificate() {
+        return $this->hasOne(Certificate::class);
+    }
+
+    public function samples() {
+        return $this->hasMany(Sample::class);
     }
 }

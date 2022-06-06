@@ -3,11 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
+use App\Mail\AddNewUser;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use function Illuminate\Support\Arr;
 
@@ -56,6 +63,29 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
+    public function store(RegisterRequest $request) {
+        $password = Str::random(15);
+        try {
+            Mail::to($request->email)->send(new AddNewUser($request->first_name. $request->last_name, $password));
+        } catch (Exception $exception) {
+            return response(['success' => false, 'message' => "Something went wrong"], 422);
+        }
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'surname' => $request->surname,
+            'last_name' => $request->last_name,
+            'role' => $request->role,
+            'email' => $request->email,
+            'mobile' => $request->mobile,
+            'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
+            'gender' => $request->gender,
+            'password' => bcrypt($password)
+        ]);
+
+        Mail::to($request->email)->send(new AddNewUser($user->full_name, $password));
+        return response(['success' => true, 'message' => "Add new user"], 200);
+    }
+
     public function update(UpdateProfileRequest $request, $id)
     {
         $avatar = $request->file('avatar');
@@ -68,10 +98,7 @@ class UserController extends Controller
         }
 
         $check = User::where('id', $id)->update($request->except('avatar'));
-        if ($check) {
-            return response(['success' => true, 'message' => "Profile is updated"], 200);
-        }
-        return response(['success' => false, 'message' => "Invalid"], 422);
+        return response(['success' => true, 'message' => "Profile is updated"], 200);
     }
 
     public function show($id)
@@ -81,7 +108,7 @@ class UserController extends Controller
             return response([
                 'success' => true,
                 'message' => "success",
-                'profile' => $profile
+                'profile' => new UserResource($profile)
             ], 200);
         }
         return response([
@@ -99,11 +126,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        if (Auth::user()->id == $id) {
+            return response(['success' => false, 'message' => "Something went wrong, please check again"], 422);
+        }
         $check = User::where('id', $id)->delete();
         if ($check) {
             return response(['success' => true, 'message' => "Deleted user"], 200);
         }
-        return response(['success' => false, 'message' => "Invalid"], 422);
+        return response(['success' => false, 'message' => "Something went wrong, please check again"], 422);
     }
 
     public function export() {

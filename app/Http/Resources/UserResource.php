@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'surname' => $this->surname,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'role' => $this->role_id == Role::ADMIN ? 'Admin' : 'User',
+            'role' => $this->role == 0 ? "Admin" : "Specialist",
             'address' => $this->address,
             'avatar' => $this->avatarLink,
             'mobile' => $this->mobile,

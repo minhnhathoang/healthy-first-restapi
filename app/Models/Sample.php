@@ -16,4 +16,12 @@ class Sample extends Model
         'date_of_receiving',
         'test_results'
     ];
+
+    public function establishment() {
+        return $this->belongsTo(Establishment::class);
+    }
+
+    public function plan() {
+        return $this->belongsTo(Plan::class);
+    }
 }

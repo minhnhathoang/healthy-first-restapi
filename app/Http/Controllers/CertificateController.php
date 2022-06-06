@@ -6,7 +6,7 @@ use App\Models\Certification;
 use App\Http\Requests\StoreCertificationRequest;
 use App\Http\Requests\UpdateCertificationRequest;
 
-class CertificationController extends Controller
+class CertificateController extends Controller
 {
     /**
      * Display a listing of the resource.

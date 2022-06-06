@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('certifications', function (Blueprint $table) {
-            $table->unsignedBigInteger('establishment_id');
-            $table->unsignedInteger('registration_number')->autoIncrement();
+        Schema::create('certificates', function (Blueprint $table) {
+            $table->unsignedBigInteger('establishment_id')->primary();
+            $table->unsignedInteger('registration_number');
             $table->date('date_issued');
             $table->date('due_date');
             $table->boolean('is_revoked');
