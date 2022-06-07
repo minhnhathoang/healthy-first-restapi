@@ -2,85 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
 use App\Models\Certification;
 use App\Http\Requests\StoreCertificationRequest;
 use App\Http\Requests\UpdateCertificationRequest;
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
 
 class CertificateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function store(Request $request)
     {
-        //
+        $date1 = Carbon::createFromFormat('Y-m-d', $request->date_issued);
+        $date2 = Carbon::createFromFormat('Y-m-d', $request->due_date);
+        if ($date1->gt($date2)) {
+            return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
+        }
+        $reg_no = Certificate::max('registration_number');
+        try {
+            $certificate = Certificate::create([
+                'establishment_id' => $request->establishment_id,
+                'registration_number' => $reg_no + 1,
+                'date_issued' => $request->date_issued,
+                'due_date' => $request->due_date,
+                'is_revoked' => 0
+            ]);
+        } catch (Exception $exception) {
+            return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
+        }
+        return response(['success' => true, 'message' => "Submit success!"], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCertificationRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCertificationRequest $request)
+    public function update(Request $request)
     {
-        //
+        try {
+            Certificate::where('establishment_id', $request->establishment_id)->update([
+                'is_revoked' => $request->is_revoked
+            ]);
+        } catch (Exception $exception) {
+            return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
+
+        }
+        return response(['success' => true, 'message' => "Update Certificate success"], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Certification  $certification
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Certification $certification)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Certification  $certification
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Certification $certification)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCertificationRequest  $request
-     * @param  \App\Models\Certification  $certification
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCertificationRequest $request, Certification $certification)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Certification  $certification
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Certification $certification)
-    {
-        //
+        try {
+            Certificate::where('establishment_id', $id)->delete();
+        } catch (Exception $exception) {
+            return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
+        }
+        return response(['success' => true, 'message' => "Delete this certificate success!"], 200);
     }
 }

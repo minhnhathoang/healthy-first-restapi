@@ -65,6 +65,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/establishments/{id}', [\App\Http\Controllers\EstablishmentController::class, 'index']);
 
     // certificate
+    Route::post('/certificate/add', [\App\Http\Controllers\CertificateController::class, 'store']);
+    Route::post('/certificate/update', [\App\Http\Controllers\CertificateController::class, 'update']);
+    Route::delete('/certificate/delete/{id}', [\App\Http\Controllers\CertificateController::class, 'destroy']);
 
     // plan
 

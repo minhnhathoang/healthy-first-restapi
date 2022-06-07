@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 /**
@@ -21,13 +23,14 @@ class UserFactory extends Factory
         return [
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
-            'role' => rand(0, 1),
+            'role' => 1,
+            'location' => DB::table('provinces')->inRandomOrder()->first()->name,
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => $this->faker->date(),
             'password' => $password,
             'remember_token' => Str::random(10),
-            'avatar' => $this->faker->imageUrl(),
-            'last_name' => $this->faker->lastName(),
+            'avatar' => "images/avatar.png",
+            'surname' => $this->faker->lastName(),
             'address' => $this->faker->address(),
             'gender' => rand(0, 1),
             'birthday' => $this->faker->date(),

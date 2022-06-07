@@ -27,9 +27,9 @@ class UpdateProfileRequest extends FormRequest
             'first_name' => 'string',
             'last_name' => 'string',
             'address' => 'string',
-//            'gender' => 'boolean',
-//            'mobile' => 'digits_between:10,12',
-//            'birthday' => 'date',
+            'gender' => 'boolean',
+            'mobile' => 'digits_between:9,14',
+            'birthday' => 'date',
 //            'avatar' => 'mimes:jpg,jpeg,png'
         ];
     }

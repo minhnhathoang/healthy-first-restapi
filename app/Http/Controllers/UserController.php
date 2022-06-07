@@ -75,6 +75,8 @@ class UserController extends Controller
             'surname' => $request->surname,
             'last_name' => $request->last_name,
             'role' => $request->role,
+            'location' => $request->location,
+            'avatar' => 'images/avatar.png',
             'email' => $request->email,
             'mobile' => $request->mobile,
             'birthday' => Carbon::parse($request->birthday)->format('Y-m-d'),
@@ -97,7 +99,11 @@ class UserController extends Controller
             ]);
         }
 
-        $check = User::where('id', $id)->update($request->except('avatar'));
+        try {
+            $check = User::where('id', $id)->update($request->except('avatar'));
+        } catch (Exception $e) {
+            return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
+        }
         return response(['success' => true, 'message' => "Profile is updated"], 200);
     }
 
@@ -126,12 +132,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        if (Auth::user()->id == $id) {
+        $user = User::where('id', $id)->first();
+
+        if (Auth::user()->id == $id || $user->role == 0) {
             return response(['success' => false, 'message' => "Something went wrong, please check again"], 422);
         }
+
         $check = User::where('id', $id)->delete();
         if ($check) {
-            return response(['success' => true, 'message' => "Deleted user"], 200);
+            return response(['success' => true, 'message' => "Deleted user success!"], 200);
         }
         return response(['success' => false, 'message' => "Something went wrong, please check again"], 422);
     }

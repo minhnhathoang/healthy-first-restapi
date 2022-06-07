@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('role');
+            $table->string('location');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -30,6 +31,8 @@ return new class extends Migration
             $table->string('job')->nullable();
             $table->string('mobile')->nullable();
             $table->date('birthday')->nullable();
+
+            $table->foreign('location')->references('name')->on('provinces')->onUpdate('cascade')->onDelete('cascade');
 
             $table->rememberToken();
             $table->timestamps();

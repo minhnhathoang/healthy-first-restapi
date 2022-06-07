@@ -22,7 +22,6 @@ class CertificateFactory extends Factory
             'establishment_id' => rand(2, 400),
             'registration_number' => $this->faker->randomNumber(5),
             'date_issued' => $this->faker->date(),
-//            'due_date' => Carbon::today()->toDateString(),
             'due_date' => $this->faker->date(),
             'is_revoked' => rand(0, rand(0, rand(0, 1)))
         ];

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         ]);
         //\App\Models\User::factory(400)->create();
-        //Establishment::factory(400)->create();
-        Certificate::factory(400)->create();
+//        Establishment::factory(400)->create();
+        Certificate::factory(200)->create();
     }
 }

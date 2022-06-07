@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEstablishmentRequest;
 use App\Http\Resources\EstablishmentResource;
 use App\Models\Establishment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EstablishmentController extends Controller
 {
@@ -18,6 +20,8 @@ class EstablishmentController extends Controller
 
     protected array $sortFields = ['name', 'owner', 'address', 'kind_of_business', 'certificates.registration_number'];
 
+    protected array $filter = ['Default', 'Active', 'Expired', 'Revoked', 'Not Certificate', 'By Kind of Business'];
+
     /**
      * Display a listing of the resource.
      *
@@ -25,16 +29,39 @@ class EstablishmentController extends Controller
      */
     public function index(Request $request)
     {
+        $user = Auth::user();
+        $location = $user->location;
+
         $sortFieldInput = $request->input('sort_field', self::DEFAULT_SORT_FIELD);
         $sortField = in_array($sortFieldInput, $this->sortFields) ? $sortFieldInput : self::DEFAULT_SORT_FIELD;
         $sortOrder = $request->input('sort_order', self::DEFAULT_SORT_ORDER);
         $searchInput = $request->input('search');
 
-        $query = Establishment::with('certificate')->orderBy($sortField, $sortOrder);
-        if ($sortField === 'certificates.registration_number') {
-            $query = Establishment::select(['*', 'certificates.registration_number'])
-                ->join('certificates', 'certificates.establishment_id', '=', 'establishments.id')
-                ->orderBy('certificates.registration_number', $sortOrder);
+        $filter = $request->input('filter');
+
+        $query = "";
+
+        if ($user->role == 0) {
+            $query = Establishment::with('certificate')->orderBy($sortField, $sortOrder);
+        } else {
+            $query = Establishment::with('certificate')
+                ->where('address', 'like', "%$location%")
+                ->orderBy($sortField, $sortOrder);
+        }
+
+        if ($filter == 'Active') {
+            $query = $query->join('certificates', 'id', '=', 'certificates.establishment_id')
+                ->where('certificates.is_revoked', '=', 0)
+                ->where('certificates.due_date', '>', Carbon::now()->toDateString());
+        } else if ($filter == 'Revoked') {
+            $query = $query->join('certificates', 'id', '=', 'certificates.establishment_id')
+                ->where('certificates.is_revoked', '=', 1);
+        } else if ($filter == 'Expired') {
+            $query = $query->join('certificates', 'id', '=', 'certificates.establishment_id')
+                ->where('certificates.is_revoked', '=', 0)
+                ->where('certificates.due_date', '<', Carbon::now()->toDateString());
+        } else if ($filter == 'Not Certificate') {
+            $query->doesntHave('certificate');
         }
 
         $perPage = $request->input('per_page') ?? self::PER_PAGE;
@@ -46,19 +73,18 @@ class EstablishmentController extends Controller
                 ->orWhere('address', 'like', $searchQuery)
                 ->orWhere('kind_of_business', 'like', $searchQuery);
         }
-
-
         $etab = $query->paginate((int)$perPage);
 
         return EstablishmentResource::collection($etab);
     }
 
-    public function store(StoreEstablishmentRequest $request) {
+    public function store(StoreEstablishmentRequest $request)
+    {
 
         $establishment = Establishment::create([
             'name' => $request->name,
             'owner' => $request->owner,
-            'address' => $request->address.', '.$request->commune.', '.$request->district.', '.$request->province,
+            'address' => $request->address . ', ' . $request->commune . ', ' . $request->district . ', ' . $request->province,
             'telephone' => $request->telephone,
             'kind_of_business' => $request->kind_of_business,
             'fax' => $request->fax,
@@ -71,7 +97,15 @@ class EstablishmentController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $check = Establishment::where('id', $id)->update($request->except(['district', 'province', 'commune']));
+            $check = Establishment::where('id', $id)->update([
+                'name' => $request->name,
+                'owner' => $request->owner,
+                'address' => $request->address . ', ' . $request->commune . ', ' . $request->district . ', ' . $request->province,
+                'telephone' => $request->telephone,
+                'kind_of_business' => $request->kind_of_business,
+                'fax' => $request->fax,
+                'description' => $request->description,
+            ]);
         } catch (\Exception $exception) {
             return response(['success' => false, 'message' => "Something went wrong. Please check and try again"], 422);
         }

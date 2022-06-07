@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
-class RegisterRequest extends FormRequest
+class StoreCertificateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,16 +19,14 @@ class RegisterRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'role' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'location' => 'required',
+            'establishment_id' => 'required',
+            'date_issued' => 'required',
+            'due_date' => 'required',
         ];
     }
 }
