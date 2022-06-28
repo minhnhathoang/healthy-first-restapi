@@ -9,12 +9,11 @@ class District extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'province_id',
         'name',
         'level'
     ];
-
-    public $timestamps = false;
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -35,7 +35,7 @@ class ResetPasswordController extends Controller
 
         $user = User::where('email', $request->email);
         $user->update([
-            'password'=> bcrypt($request->password)
+            'password' => bcrypt($request->password)
         ]);
 
         $token = $user->first()->createToken('myapptoken')->plainTextToken;
@@ -44,7 +44,7 @@ class ResetPasswordController extends Controller
             [
                 'success' => true,
                 'message' => "Your password has been reset",
-                'token'=> $token
+                'token' => $token
             ],
             200
         );

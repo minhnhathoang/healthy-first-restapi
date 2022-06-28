@@ -26,7 +26,7 @@ class ForgotPasswordController extends Controller
         $verify = User::where('email', $request->all()['email'])->exists();
 
         if ($verify) {
-            $verify2 =  DB::table('password_resets')->where([
+            $verify2 = DB::table('password_resets')->where([
                 ['email', $request->all()['email']]
             ]);
 
@@ -37,7 +37,7 @@ class ForgotPasswordController extends Controller
             $token = random_int(100000, 999999);
             $password_reset = DB::table('password_resets')->insert([
                 'email' => $request->all()['email'],
-                'token' =>  $token,
+                'token' => $token,
                 'created_at' => Carbon::now()
             ]);
 

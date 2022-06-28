@@ -9,11 +9,10 @@ class Province extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'name',
         'level'
     ];
-
-    public $timestamps = false;
 }

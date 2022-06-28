@@ -17,7 +17,8 @@ class Certificate extends Model
         'is_revoked'
     ];
 
-    public function establishment() {
+    public function establishment()
+    {
         return $this->belongsTo(Establishment::class);
     }
 }

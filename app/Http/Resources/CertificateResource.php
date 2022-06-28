@@ -10,7 +10,7 @@ class CertificateResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -24,7 +24,7 @@ class CertificateResource extends JsonResource
             'due_date' => $this->due_date,
             'is_revoked' => $this->is_revoked,
             'is_expired' => $date1->lt($date2),
-            'time_remaining' => Carbon::createFromFormat('Y-m-d', $this->due_date   )->diffForHumans()
+            'time_remaining' => Carbon::createFromFormat('Y-m-d', $this->due_date)->diffForHumans()
         ];
     }
 }

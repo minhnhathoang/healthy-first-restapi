@@ -4,5 +4,5 @@
     You are logged in Healthy First at {{$time}}
 
 
-{{ config('app.name') }}
+    {{ config('app.name') }}
 @endcomponent

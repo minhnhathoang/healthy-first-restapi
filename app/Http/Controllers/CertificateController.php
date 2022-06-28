@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Certificate;
-use App\Models\Certification;
 use App\Http\Requests\StoreCertificationRequest;
 use App\Http\Requests\UpdateCertificationRequest;
+use App\Models\Certificate;
+use App\Models\Certification;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;

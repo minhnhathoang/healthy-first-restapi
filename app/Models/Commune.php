@@ -9,12 +9,11 @@ class Commune extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = [
         'id',
         'district_id',
         'name',
         'level'
     ];
-
-    public $timestamps = false;
 }

@@ -10,7 +10,6 @@ use App\Mail\AddNewUser;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -21,13 +20,12 @@ use function Illuminate\Support\Arr;
 class UserController extends Controller
 {
     protected $user;
+    protected array $sortFields = ['first_name', 'address', 'email', 'role'];
 
     public function __construct(User $user)
     {
         $this->user = $user;
     }
-
-    protected array $sortFields = ['first_name', 'address', 'email', 'role'];
 
     /**
      * Display a listing of the resource.
@@ -63,10 +61,11 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
-    public function store(RegisterRequest $request) {
+    public function store(RegisterRequest $request)
+    {
         $password = Str::random(15);
         try {
-            Mail::to($request->email)->send(new AddNewUser($request->first_name. $request->last_name, $password));
+            Mail::to($request->email)->send(new AddNewUser($request->first_name . $request->last_name, $password));
         } catch (Exception $exception) {
             return response(['success' => false, 'message' => "Something went wrong"], 422);
         }
@@ -145,7 +144,8 @@ class UserController extends Controller
         return response(['success' => false, 'message' => "Something went wrong, please check again"], 422);
     }
 
-    public function export() {
+    public function export()
+    {
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 }

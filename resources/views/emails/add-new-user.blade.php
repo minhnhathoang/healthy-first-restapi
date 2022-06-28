@@ -1,7 +1,7 @@
 @component('mail::message')
-Hey {{$name}},
-Your password: {{$password}}
+    Hey {{$name}},
+    Your password: {{$password}}
 
-Thanks,<br>
-{{ config('app.name') }}
+    Thanks,<br>
+    {{ config('app.name') }}
 @endcomponent

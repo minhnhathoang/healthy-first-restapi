@@ -18,11 +18,13 @@ class Establishment extends Model
         'kind_of_business'
     ];
 
-    public function certificate() {
+    public function certificate()
+    {
         return $this->hasOne(Certificate::class);
     }
 
-    public function samples() {
+    public function samples()
+    {
         return $this->hasMany(Sample::class);
     }
 }

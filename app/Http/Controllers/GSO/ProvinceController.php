@@ -12,11 +12,13 @@ use Maatwebsite\Excel\Facades\Excel;
 class ProvinceController extends Controller
 {
 
-    public function index() {
+    public function index()
+    {
         return ProvinceResource::collection(Province::all());
     }
 
-    public function import(Request $request) {
+    public function import(Request $request)
+    {
         Excel::import(new ProvinceImport(), $request->file('provinces_import'));
     }
 }

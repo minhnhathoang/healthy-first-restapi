@@ -23,7 +23,7 @@ class EstablishmentFactory extends Factory
             'owner' => $this->faker->name(),
             'telephone' => $this->faker->phoneNumber(),
             'fax' => $this->faker->phoneNumber(),
-            'address' => $this->faker->city().', '. DB::table('provinces')->inRandomOrder()->first()->name,
+            'address' => $this->faker->city() . ', ' . DB::table('provinces')->inRandomOrder()->first()->name,
             'kind_of_business' => $type[rand(0, 1)],
             'description' => $this->faker->text(50)
         ];

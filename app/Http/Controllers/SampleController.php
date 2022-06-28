@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sample;
 use App\Http\Requests\StoreSampleRequest;
 use App\Http\Requests\UpdateSampleRequest;
+use App\Models\Sample;
 
 class SampleController extends Controller
 {
@@ -31,7 +31,7 @@ class SampleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSampleRequest  $request
+     * @param \App\Http\Requests\StoreSampleRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreSampleRequest $request)
@@ -42,7 +42,7 @@ class SampleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Sample  $sample
+     * @param \App\Models\Sample $sample
      * @return \Illuminate\Http\Response
      */
     public function show(Sample $sample)
@@ -53,7 +53,7 @@ class SampleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Sample  $sample
+     * @param \App\Models\Sample $sample
      * @return \Illuminate\Http\Response
      */
     public function edit(Sample $sample)
@@ -64,8 +64,8 @@ class SampleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSampleRequest  $request
-     * @param  \App\Models\Sample  $sample
+     * @param \App\Http\Requests\UpdateSampleRequest $request
+     * @param \App\Models\Sample $sample
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSampleRequest $request, Sample $sample)
@@ -76,7 +76,7 @@ class SampleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Sample  $sample
+     * @param \App\Models\Sample $sample
      * @return \Illuminate\Http\Response
      */
     public function destroy(Sample $sample)

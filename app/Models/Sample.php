@@ -17,11 +17,13 @@ class Sample extends Model
         'test_results'
     ];
 
-    public function establishment() {
+    public function establishment()
+    {
         return $this->belongsTo(Establishment::class);
     }
 
-    public function plan() {
+    public function plan()
+    {
         return $this->belongsTo(Plan::class);
     }
 }

@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Province;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ProvinceSeeder extends Seeder
 {
@@ -74,6 +72,7 @@ class ProvinceSeeder extends Seeder
         ["95", "Tỉnh Bạc Liêu"],
         ["96", "Tỉnh Cà Mau"],
     ];
+
     /**
      * Run the database seeds.
      *

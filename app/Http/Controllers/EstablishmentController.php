@@ -12,15 +12,13 @@ use Illuminate\Support\Facades\Auth;
 class EstablishmentController extends Controller
 {
     protected $establishment;
+    protected array $sortFields = ['name', 'owner', 'address', 'kind_of_business', 'certificates.registration_number'];
+    protected array $filter = ['Default', 'Active', 'Expired', 'Revoked', 'Not Certificate', 'By Kind of Business'];
 
     public function __construct(Establishment $establishment)
     {
         $this->establishment = $establishment;
     }
-
-    protected array $sortFields = ['name', 'owner', 'address', 'kind_of_business', 'certificates.registration_number'];
-
-    protected array $filter = ['Default', 'Active', 'Expired', 'Revoked', 'Not Certificate', 'By Kind of Business'];
 
     /**
      * Display a listing of the resource.

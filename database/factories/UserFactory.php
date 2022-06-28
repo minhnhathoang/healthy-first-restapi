@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Province;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
